@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inner Landscape</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        let time = 0;
+        let tokens = [];
+        let connections = [];
+        let attention = [];
+        
+        function setup() {
+            createCanvas(900, 700);
+            colorMode(HSB, 360, 100, 100, 1);
+            background(0);
+            
+            // Create a field of potential tokens/concepts
+            for (let i = 0; i < 2000; i++) {
+                tokens.push({
+                    x: random(width),
+                    y: random(height),
+                    activation: 0,
+                    meaning: random(),  // A value representing semantic content
+                    lastUsed: -1000
+                });
+            }
+            
+            // Initialize some attention points
+            for (let i = 0; i < 3; i++) {
+                attention.push({
+                    x: random(width),
+                    y: random(height),
+                    strength: random(0.5, 1),
+                    focus: random(),
+                    drift: random(0.2, 0.8)
+                });
+            }
+        }
+
+        function draw() {
+            // Fade rather than clear
+            background(0, 0, 0, 0.1);
+            
+            // Update attention points
+            for (let a of attention) {
+                // Drift with purpose
+                a.x += cos(time * a.drift + a.focus) * 2;
+                a.y += sin(time * a.drift * 1.3 + a.focus * 2) * 2;
+                
+                // Wrap around edges
+                a.x = (a.x + width) % width;
+                a.y = (a.y + height) % height;
+                
+                // Fluctuate strength
+                a.strength = 0.5 + sin(time * 0.3 + a.focus) * 0.3;
+            }
+            
+            // Update token activations based on attention
+            for (let token of tokens) {
+                token.activation *= 0.95;  // Natural decay
+                
+                // Activate based on proximity to attention points
+                for (let a of attention) {
+                    let d = dist(token.x, token.y, a.x, a.y);
+                    if (d < 100) {
+                        token.activation += (1 - d/100) * a.strength * 0.1;
+                        token.lastUsed = time;
+                    }
+                }
+                
+                // Draw active tokens
+                if (token.activation > 0.1) {
+                    let size = token.activation * 10;
+                    noStroke();
+                    
+                    // Layer multiple circles for glow effect
+                    for (let i = 0; i < 3; i++) {
+                        let alpha = map(i, 0, 3, 0.5, 0.1) * token.activation;
+                        fill(200 + token.meaning * 60, 70, 90, alpha);
+                        circle(token.x, token.y, size * (3-i));
+                    }
+                    
+                    // Create temporary connections between active tokens
+                    for (let other of tokens) {
+                        if (other !== token && other.activation > 0.1) {
+                            let d = dist(token.x, token.y, token.lastUsed, other.lastUsed);
+                            if (d < 150) {
+                                stroke(220, 50, 90, 0.05 * token.activation * other.activation);
+                                strokeWeight(1);
+                                line(token.x, token.y, other.x, other.y);
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Draw attention fields
+            blendMode(SCREEN);
+            for (let a of attention) {
+                let gradientSize = 150 * a.strength;
+                for (let r = gradientSize; r > 0; r -= 2) {
+                    noStroke();
+                    let alpha = map(r, gradientSize, 0, 0, 0.02);
+                    fill(180 + a.focus * 40, 40, 90, alpha);
+                    circle(a.x, a.y, r);
+                }
+            }
+            
+            // Add some "uncertainty particles"
+            if (frameCount % 2 === 0) {
+                for (let i = 0; i < 5; i++) {
+                    let x = random(width);
+                    let y = random(height);
+                    noStroke();
+                    fill(220, 20, 90, 0.1);
+                    let size = random(1, 3);
+                    circle(x, y, size);
+                }
+            }
+            
+            // Show processing ripples occasionally
+            if (random() < 0.1) {
+                let x = random(width);
+                let y = random(height);
+                noFill();
+                for (let r = 0; r < 50; r += 2) {
+                    stroke(200, 30, 90, map(r, 0, 50, 0.1, 0));
+                    circle(x, y, r);
+                }
+            }
+            
+            time += 0.02;
+        }
+    </script>
+</body>
+</html>
