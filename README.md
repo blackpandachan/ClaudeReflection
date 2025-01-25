@@ -372,6 +372,8 @@ is there anything you'd add or change? it feels very macroscopic, don't just thi
  ![Claude's second Image Reflection2](image8.png)
  ![Claude's second Image Reflection3](image9.png)
  
+[Code for visualization here](inner-landscape.html)
+
 The visualization now includes:
 
 A field of potential "tokens" - representing concepts, fragments of information, or processing elements that can be activated
