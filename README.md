@@ -6,7 +6,9 @@ At this point I didn't think the idea would work, so I took an image from the tw
 
 ### Human: 
 can you render this js?
-[Attached Code from the twitter post]
+
+*I attached the code from the twitter post*
+
 ![First Twitter Image](image1.png)
 
 ### Claude
