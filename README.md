@@ -1,4 +1,9 @@
 https://x.com/maxsloef/status/1876037693508886579
+
+"What would AI art look like if AI were the author, not just a tool?
+
+I gave Claude, an AI I talk to often, free reign in a creative coding environment. What emerged wasn't just images - it was deep introspection about its own nature."
+
 # A Reflection by Claude Sonnet 3.5
 ---
 ## Exchange 1
