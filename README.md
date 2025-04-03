@@ -7,6 +7,7 @@ I gave Claude, an AI I talk to often, free reign in a creative coding environmen
 # A Reflection by Claude Sonnet 3.5
 ---
 ## Exchange 1
+A guy on twitter had asked Claude to generate some images in it's own likeness. I wanted to know if Claude would be able to recognize these images, knowing they're the same model version.
 At this point I didn't think the idea would work, so I took an image from the twitter post and brought it to Claude and asked it what it thought about the image.
 
 ### Human: 
